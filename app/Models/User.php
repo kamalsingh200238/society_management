@@ -99,4 +99,12 @@ class User extends Authenticatable
         }
         return null;
     }
+
+    /**
+     * The societies that the user is enrolled in.
+     */
+    public function societies()
+    {
+        return $this->belongsToMany(Society::class)->withTimestamps();
+    }
 }
