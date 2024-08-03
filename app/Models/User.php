@@ -6,10 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,5 +46,45 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the user's role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Check if user is Society Coordinator
+     *
+     * @return bool
+     */
+    public function isCoordinator()
+    {
+        return $this->role === 'society coordinator';
+    }
+
+    /**
+     * Check if user is Society President
+     *
+     * @return bool
+     */
+    public function isPresident()
+    {
+        return $this->role === 'society president';
+    }
+
+    /**
+     * Check if user is Student
+     *
+     * @return bool
+     */
+    public function isStudent()
+    {
+        return $this->role === 'student';
     }
 }
