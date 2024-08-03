@@ -87,4 +87,16 @@ class User extends Authenticatable
     {
         return $this->role === 'student';
     }
+
+    /**
+     * Get the society that the president is connected to.
+     * This will only return a society if the user is a president.
+     */
+    public function getSocietyOfPresident()
+    {
+        if ($this->role === 'president') {
+            return $this->hasOne(Society::class, 'president_id');
+        }
+        return null;
+    }
 }
