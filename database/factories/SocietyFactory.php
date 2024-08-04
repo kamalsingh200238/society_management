@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Society;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Society>
