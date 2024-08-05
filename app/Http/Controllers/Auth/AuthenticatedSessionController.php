@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
 
         if ($user->isCoordinator()) {
-            return redirect()->intended(route('student.dashboard'));
+            return redirect()->intended(route('coordinator.dashboard'));
         } else {
             return redirect()->intended(route('student.dashboard'));
         }
