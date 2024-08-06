@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Society;
 // use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,7 +12,25 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'role:society coordinator'])->prefix('/coordinator')->name('coordinator.')->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Student');
+        $societies = Society::with('president')
+            ->orderBy('name')
+            ->paginate(25)
+            ->through(function ($society) {
+                return [
+                    'id' => $society->id,
+                    'name' => $society->name,
+                    'isActive' => $society->is_active,
+                    'president' => $society->president ? [
+                        'id' => $society->president->id,
+                        'name' => $society->president->name,
+                        'email' => $society->president->email,
+                    ] : null,
+                ];
+            });
+
+        return Inertia::render('Coordinator', [
+            'societies' => $societies,
+        ]);
     })->name('dashboard');
 });
 
