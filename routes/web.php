@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Society;
 // use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,27 +11,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'role:society coordinator'])->prefix('/coordinator')->name('coordinator.')->group(function () {
-    Route::get('/dashboard', function () {
-        $societies = Society::with('president')
-            ->orderBy('name')
-            ->paginate(25)
-            ->through(function ($society) {
-                return [
-                    'id' => $society->id,
-                    'name' => $society->name,
-                    'isActive' => $society->is_active,
-                    'president' => $society->president ? [
-                        'id' => $society->president->id,
-                        'name' => $society->president->name,
-                        'email' => $society->president->email,
-                    ] : null,
-                ];
-            });
-
-        return Inertia::render('Coordinator', [
-            'societies' => $societies,
-        ]);
-    })->name('dashboard');
+    Route::get('/dashboard', [CoordinatorController::class, 'showAllSocieties'])->name('dashboard');
+    Route::patch('/{society}/change-status', [CoordinatorController::class, 'updateSocietyStatus'])->name('update.society.status');
 });
 
 Route::middleware(['auth', 'role:student,society president'])->prefix('/student')->name('student.')->group(function () {
