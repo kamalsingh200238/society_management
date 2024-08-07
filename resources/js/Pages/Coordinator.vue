@@ -1,21 +1,21 @@
 <script setup>
-const x = defineProps({
+import { Head, Link } from "@inertiajs/vue3";
+defineProps({
     societies: Object,
 });
-
-console.log(x.societies);
 </script>
 <template>
-    <div>Hi Student</div>
-    <div>{{ $page.props.auth.user }}</div>
-    <div>{{ $page.props.societies }}</div>
+
+    <Head title="Coordinator Dashboard"></Head>
+
+    <div>Coordinator Dashboard</div>
     <table>
         <thead>
             <tr>
                 <th>Society Name</th>
                 <th>Status</th>
                 <th>President Name</th>
-                <th>President Email</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,15 @@ console.log(x.societies);
                 <td class="px-5 py-2">{{ society.name }}</td>
                 <td class="px-5 py-2">{{ society.isActive }}</td>
                 <td class="px-5 py-2">{{ society.president.name }}</td>
-                <td class="px-5 py-2">{{ society.president.email }}</td>
+                <td class="px-5 py-2">
+                    <Link :href="route(
+                        'coordinator.update.society.status',
+                        society.id,
+                    )
+                        " as="button" method="patch" :data="{ isActive: !society.isActive }">
+                    {{ !society.isActive ? "Enable" : "Disable" }}
+                    </Link>
+                </td>
             </tr>
         </tbody>
     </table>
