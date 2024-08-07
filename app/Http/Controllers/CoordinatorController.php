@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 class CoordinatorController extends Controller
 {
-    public function showAllSocieties(Request $request)
+    public function showAllSocieties()
     {
         $societies = Society::with('president')
             ->orderBy('name')
